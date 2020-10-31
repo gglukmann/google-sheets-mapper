@@ -1,7 +1,7 @@
 {
   "name": "google-sheets-mapper",
   "description": "### A library for getting data from Google Sheets API v4",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "Gert Glükmann <gglukmann@gmail.com>",
   "license": "MIT",
   "bugs": {
