@@ -6,7 +6,7 @@ const GoogleSheetsMapper = {
     apiKey,
     sheetId,
     sheetsNames = [],
-  }: MapperOptions): MapperState {
+  }: MapperOptions): Promise<MapperState[]> {
     try {
       const response: ValueRangesResponse =
         sheetsNames.length === 0
