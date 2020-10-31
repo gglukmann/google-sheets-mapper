@@ -27,7 +27,7 @@ export interface SheetsResponse {
   sheets: SheetFromResponse[];
 }
 
-export interface Sheet {
+export interface MapperState {
   id: string;
   data: Array<object>;
 }

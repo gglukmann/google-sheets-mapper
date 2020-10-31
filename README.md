@@ -1,103 +1,138 @@
-# TSDX User Guide
+# Google Sheets Mapper
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
+## A library for getting data from [Google Sheets API v4](https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values)
 
-> This TSDX setup is meant for developing libraries (not apps!) that can be published to NPM. If you’re looking to build a Node app, you could use `ts-node-dev`, plain `ts-node`, or simple `tsc`.
+[![Minified file size](https://img.badgesize.io/https://www.unpkg.com/google-sheets-mapper/dist/google-sheets-mapper.esm.js.svg)](https://bundlephobia.com/result?p=google-sheets-mapper) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![NPM version](https://img.shields.io/npm/v/google-sheets-mapper)](https://www.npmjs.com/package/google-sheets-mapper)
 
-> If you’re new to TypeScript, checkout [this handy cheatsheet](https://devhints.io/typescript)
+---
 
-## Commands
+## Installation
 
-TSDX scaffolds your new library inside `/src`.
-
-To run TSDX, use:
+Package can be added using **yarn**:
 
 ```bash
-npm start # or yarn start
+yarn add google-sheets-mapper
 ```
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
+Or, use **NPM**:
 
-To do a one-off build, use `npm run build` or `yarn build`.
-
-To run tests, use `npm test` or `yarn test`.
-
-## Configuration
-
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
-
-### Jest
-
-Jest tests are set up to run with `npm test` or `yarn test`.
-
-### Bundle Analysis
-
-[`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real cost of your library with `npm run size` and visualize the bundle with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
+```bash
+npm install google-sheets-mapper
 ```
 
-### Rollup
+UMD build available on [unpkg](https://www.unpkg.com/browse/google-sheets-mapper@1.0.0/dist/google-sheets-mapper.cjs.production.min.js).
 
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
+---
 
-### TypeScript
+## Usage
 
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
+1. Go to [Google Cloud Console](https://console.cloud.google.com/) to get API key for Google Sheets API.
+2. Create a Google Sheet and add some data. See [example sheet](https://docs.google.com/spreadsheets/d/1zbEyIfga05-gXTCVGejJHpl8ZrlcTYanvgnQBa1t2DM/edit#gid=0).
+3. Share it with "Anyone with this link can view".
+4. Get sheet id from url of the sheet.
 
-## Continuous Integration
+```html
+https://docs.google.com/spreadsheets/d/[THIS-IS-THE-SHEET-ID]/
+```
 
-### GitHub Actions
+5. I suggest adding API key and sheet id to `.env` file
 
-Two actions are added by default:
+---
 
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
+## Examples
 
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
+### Get data from all sheets inside the spreadsheet
 
 ```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
+import { fetchGoogleSheetsData } from 'google-sheets-mapper';
 
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
+const getData = async () => {
+  try {
+    return await fetchGoogleSheetsData({
+      apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+      sheetId: process.env.REACT_APP_GOOGLE_SHEETS_ID,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
+
+### Get data from specific sheets inside the spreadsheet
+
+Don't use single quotes on sheet names, they will be removed because when using space in sheet name it will be returned wrapped with single quotes and plugin will remove them for clean string id.
+
+```js
+import { fetchGoogleSheetsData } from 'google-sheets-mapper';
+
+const getData = async () => {
+  try {
+    return await fetchGoogleSheetsData({
+      apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+      sheetId: process.env.REACT_APP_GOOGLE_SHEETS_ID,
+      sheetsNames: ['Sheet1'],
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
+
+---
+
+## API Documentation
+
+The `GoogleSheetsMapper.fetchGoogleSheetsData` function takes an object with three properties:
+
+| Name        | Value  |
+| ----------- | ------ |
+| apiKey      | string |
+| sheetId     | string |
+| sheetsNames | array  |
+
+- `apiKey` is a Google Sheets API v4 key from [Google Cloud Console](https://console.cloud.google.com/).
+- `sheetId` is the id of the sheet.
+- `sheetsNames` is an array of specific sheet names. Can be left out then it will fallback to all sheets inside the spreadsheet.
+
+### Exposed Data
+
+The function produces an `MapperState` object:
+
+```js
+try {
+  const data = await GoogleSheetsMapper.fetchGoogleSheetsData({
+    apiKey,
+    sheetId,
+  });
+} catch (error) {
+  console.error(error);
 }
 ```
 
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
+| Name | Value |
+| ---- | ----- |
+| data | array |
 
-## Module Formats
+- `data` is an array of mapped data objects.
 
-CJS, ESModules, and UMD module formats are supported.
+```js
+[
+  {
+    id: 'Sheet1',
+    data: [
+      { value: 'et', key: 'language' },
+      { value: 'Test sheet', key: 'title' },
+    ],
+  },
+];
+```
 
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
+- `error` lets you know when there is something wrong. It returns an error object where you can get specific error properties from `error.response`
 
-## Named Exports
-
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
-
-## Including Styles
-
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
-
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
-
-## Publishing to NPM
-
-We recommend using [np](https://github.com/sindresorhus/np).
+```js
+{
+  status: '404',
+  statusText: '',
+  url: 'https://sheets.googleapis.com/v4/spreadsheets/...',
+}
+```

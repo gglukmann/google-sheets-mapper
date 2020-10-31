@@ -1,8 +1,26 @@
 {
   "name": "google-sheets-mapper",
+  "description": "### A library for getting data from Google Sheets API v4",
   "version": "0.1.0",
+  "author": "Gert Glükmann <gglukmann@gmail.com>",
   "license": "MIT",
-  "author": "Gert Glükmann",
+  "bugs": {
+    "url": "https://github.com/gglukmann/use-google-sheets/issues"
+  },
+  "homepage": "https://github.com/gglukmann/use-google-sheets#readme",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gglukmann/google-sheets-mapper.git"
+  },
+  "keywords": [
+    "google-sheets-mapper",
+    "google-sheets",
+    "google-sheets-api",
+    "google-sheets-api-v4"
+  ],
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -26,12 +44,6 @@
     "hooks": {
       "pre-commit": "tsdx lint"
     }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
   },
   "module": "dist/google-sheets-mapper.esm.js",
   "size-limit": [
