@@ -1,6 +1,8 @@
 {
+  "name": "google-sheets-mapper",
   "version": "0.1.0",
   "license": "MIT",
+  "author": "Gert Glükmann",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -31,8 +33,6 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "google-sheets-mapper",
-  "author": "Gert Glükmann",
   "module": "dist/google-sheets-mapper.esm.js",
   "size-limit": [
     {
