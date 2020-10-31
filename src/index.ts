@@ -21,3 +21,4 @@ const GoogleSheetsMapper = {
 };
 
 export default GoogleSheetsMapper;
+export const fetchGoogleSheetsData = GoogleSheetsMapper.fetchGoogleSheetsData;
