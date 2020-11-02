@@ -109,9 +109,10 @@ try {
 }
 ```
 
-| Name | Value |
-| ---- | ----- |
-| data | array |
+| Name  | Value          |
+| ----- | -------------- |
+| data  | array          |
+| error | null or object |
 
 - `data` is an array of mapped data objects.
 
