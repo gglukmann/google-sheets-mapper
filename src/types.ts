@@ -1,18 +1,23 @@
+export interface SheetsOption {
+  id: string;
+  headerRowIndex?: number;
+}
+
 export interface MapperOptions {
   apiKey: string;
   sheetId: string;
-  sheetsNames?: Array<string>;
+  sheetsOptions?: SheetsOption[];
 }
 
 export interface ValueRange {
   majorDimensions: string;
   range: string;
-  values: Array<string[]>;
+  values: string[][];
 }
 
 export interface ValueRangesResponse {
   spreadsheetId: string;
-  valueRanges: Array<ValueRange>;
+  valueRanges: ValueRange[];
 }
 
 export interface PropertiesFromResponse {
@@ -29,7 +34,7 @@ export interface SheetsResponse {
 
 export interface MapperState {
   id: string;
-  data: Array<object>;
+  data: object[];
 }
 
 export interface ApiResponse {

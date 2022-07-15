@@ -70,7 +70,7 @@ const getData = async () => {
     return await fetchGoogleSheetsData({
       apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
       sheetId: process.env.REACT_APP_GOOGLE_SHEETS_ID,
-      sheetsNames: ['Sheet1'],
+      sheetsOptions: [{ id: 'Sheet1' }],
     });
   } catch (error) {
     console.error(error);
@@ -84,15 +84,15 @@ const getData = async () => {
 
 The `GoogleSheetsMapper.fetchGoogleSheetsData` function takes an object with three properties:
 
-| Name        | Value  |
-| ----------- | ------ |
-| apiKey      | string |
-| sheetId     | string |
-| sheetsNames | array  |
+| Name          | Value  |
+| ------------- | ------ |
+| apiKey        | string |
+| sheetId       | string |
+| sheetsOptions | array  |
 
 - `apiKey` is a Google Sheets API v4 key from [Google Cloud Console](https://console.cloud.google.com/).
 - `sheetId` is the id of the sheet.
-- `sheetsNames` is an array of specific sheet names. Can be left out then it will fallback to all sheets inside the spreadsheet.
+- `sheetsOptions` is an array of specific objects `{ id, headerRowIndex }`. Can be left out then it will fallback to all sheets inside the spreadsheet and use first row from sheet as header.
 
 ### Exposed Data
 
@@ -137,3 +137,9 @@ try {
   url: 'https://sheets.googleapis.com/v4/spreadsheets/...',
 }
 ```
+
+---
+
+## Migration from v1 to v2
+
+- Change `sheetsNames` array of string to `sheetsOptions` array of objects with `{ id: 'sheetName' }`

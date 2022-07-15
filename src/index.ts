@@ -5,15 +5,15 @@ const GoogleSheetsMapper = {
   async fetchGoogleSheetsData({
     apiKey,
     sheetId,
-    sheetsNames = [],
+    sheetsOptions = [],
   }: MapperOptions): Promise<MapperState[]> {
     try {
       const response: ValueRangesResponse =
-        sheetsNames.length === 0
+        sheetsOptions.length === 0
           ? await fetchAllSheetsData({ apiKey, sheetId })
-          : await fetchBatchData({ apiKey, sheetId, sheetsNames });
+          : await fetchBatchData({ apiKey, sheetId, sheetsOptions });
 
-      return mapData(response.valueRanges);
+      return mapData({ sheets: response.valueRanges, sheetsOptions });
     } catch (error) {
       throw error;
     }

@@ -6,11 +6,12 @@ import {
   SheetsResponse,
   SheetFromResponse,
   ValueRangesResponse,
+  SheetsOption,
 } from './types';
 
 const GOOGLE_API_URL = 'https://sheets.googleapis.com/v4/spreadsheets';
 
-const getRanges = (sheetNames: MapperOptions['sheetsNames'] = []): string => {
+const getRanges = (sheetNames: string[] = []): string => {
   // ranges=Sheet1&ranges=Sheet2
   return sheetNames.map((sheetName) => `ranges=${sheetName}`).join('&');
 };
@@ -62,27 +63,38 @@ const makeFetch = async (url: string, config = {}): Promise<any> => {
   }
 };
 
-const mapRecords = (
-  records: ValueRange['values'],
-  headerData: Array<string>,
-) => {
+const mapRecords = (records: ValueRange['values'], headerData: string[]) => {
   return records
-    .filter((record: Array<string>) => record.length > 0)
-    .map((record: Array<string>) => {
-      return record.reduce((obj: any, item: string, index: number) => {
-        obj[headerData[index]] = item;
-        return obj;
-      }, {});
-    });
+    .filter((record: string[]) => record.length > 0)
+    .map((record: string[]) =>
+      record.reduce(
+        (obj: { [key: string]: unknown }, item: string, index: number) => {
+          obj[headerData[index]] = item;
+          return obj;
+        },
+        {},
+      ),
+    );
 };
 
-export const mapData = (sheets: ValueRange[]): MapperState[] => {
+export const mapData = ({
+  sheets,
+  sheetsOptions = [],
+}: {
+  sheets: ValueRange[];
+  sheetsOptions?: SheetsOption[];
+}): MapperState[] => {
   return sheets.map((sheet: ValueRange) => {
     const id = sheet.range.split('!')[0].replace(/'/g, '');
     const rows = sheet.values || [];
 
     if (rows.length > 0) {
-      const [header, ...records] = rows;
+      const sheetsOptionsSheet = sheetsOptions.find(
+        (sheet: SheetsOption) => sheet.id === id,
+      );
+      const headerRowIndex = sheetsOptionsSheet?.headerRowIndex ?? 0;
+      const header = rows[headerRowIndex];
+      const records = rows.filter((_, index: number) => index > headerRowIndex);
       const recordsData = mapRecords(records, header);
 
       return {
@@ -101,8 +113,9 @@ export const mapData = (sheets: ValueRange[]): MapperState[] => {
 export const fetchBatchData = async ({
   apiKey,
   sheetId,
-  sheetsNames = [],
+  sheetsOptions = [],
 }: MapperOptions): Promise<ValueRangesResponse> => {
+  const sheetsNames = sheetsOptions.map((option: SheetsOption) => option.id);
   const url = getBatchUrl(sheetId, sheetsNames, apiKey);
 
   return await makeFetch(url);
@@ -114,9 +127,9 @@ export const fetchAllSheetsData = async ({
 }: MapperOptions): Promise<ValueRangesResponse> => {
   const urlTitles = getSheetsTitleUrl(sheetId, apiKey);
   const { sheets }: SheetsResponse = await makeFetch(urlTitles);
-  const sheetsNames = sheets.map(
-    (sheet: SheetFromResponse) => sheet.properties.title,
-  );
+  const sheetsOptions = sheets.map((sheet: SheetFromResponse) => ({
+    id: sheet.properties.title,
+  }));
 
-  return await fetchBatchData({ sheetId, sheetsNames, apiKey });
+  return await fetchBatchData({ apiKey, sheetId, sheetsOptions });
 };
