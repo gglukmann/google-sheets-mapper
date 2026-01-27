@@ -1,7 +1,6 @@
 import type {
   MapperOptions,
   MapperState,
-  ApiResponse,
   ValueRange,
   SheetsResponse,
   SheetFromResponse,
@@ -26,30 +25,20 @@ const getBatchUrl = (sheetId: string, ranges: Array<string>, apiKey: string): st
   return `${GOOGLE_API_URL}/${sheetId}?${rangesQueryString}&key=${apiKey}&includeGridData=true`;
 };
 
-class ApiResponseError extends Error {
-  response: ApiResponse;
-  constructor(message: string, response: ApiResponse) {
-    super(message);
-    Object.setPrototypeOf(this, ApiResponseError.prototype);
-    this.response = response;
-    if (typeof Error.captureStackTrace === "function") {
-      Error.captureStackTrace(this, ApiResponseError);
-    }
-  }
-}
-
 const makeFetch = async <T>(url: string, config = {}): Promise<T> => {
   const response = await fetch(url, config);
 
   if (!response.ok) {
-    throw new ApiResponseError(
+    throw new Error(
       `Request to '${url}' failed with ${response.status}${
         response.statusText ? `: ${response.statusText}` : ""
       }`,
       {
-        status: response.status,
-        statusText: response.statusText,
-        url: response.url,
+        cause: {
+          status: response.status,
+          statusText: response.statusText,
+          url: response.url,
+        },
       },
     );
   }

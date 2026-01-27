@@ -36,13 +36,3 @@ export interface MapperState {
   id: string;
   data: Record<string, string>[];
 }
-
-export interface ApiResponse {
-  url: string;
-  status: number;
-  statusText: string;
-}
-
-export interface ErrorResponse {
-  response: ApiResponse;
-}
