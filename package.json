@@ -1,6 +1,6 @@
 {
   "name": "google-sheets-mapper",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "### A library for getting data from Google Sheets API v4",
   "keywords": [
     "google-sheets",
