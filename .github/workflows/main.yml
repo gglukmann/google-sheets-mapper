@@ -2,7 +2,7 @@ name: CI
 on: [push]
 jobs:
   build:
-    name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
+    name: Build, lint, and test on Bun ${{ matrix.bun }} and ${{ matrix.os }}
 
     runs-on: ${{ matrix.os }}
     strategy:
@@ -14,10 +14,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Use Node ${{ matrix.node }}
+      - name: Use Bun ${{ matrix.bun }}
         uses: oven-sh/setup-bun@v2
         with:
-          node-version: ${{ matrix.node }}
+          bun-version: ${{ matrix.bun }}
 
       - name: Install deps and build (with cache)
         run: bun install
