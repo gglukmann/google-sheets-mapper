@@ -8,16 +8,16 @@
 
 ## Installation
 
-Package can be added using **yarn**:
-
-```bash
-yarn add google-sheets-mapper
-```
-
-Or, use **NPM**:
-
 ```bash
 npm install google-sheets-mapper
+```
+
+```bash
+pnpm add google-sheets-mapper
+```
+
+```bash
+bun add google-sheets-mapper
 ```
 
 UMD build available on [unpkg](https://www.unpkg.com/browse/google-sheets-mapper@1.0.0/dist/google-sheets-mapper.cjs.production.min.js).
