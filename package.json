@@ -1,47 +1,59 @@
 {
   "name": "google-sheets-mapper",
-  "description": "### A library for getting data from Google Sheets API v4",
   "version": "2.0.0",
-  "author": "Gert Glükmann <gglukmann@gmail.com>",
-  "license": "MIT",
+  "description": "### A library for getting data from Google Sheets API v4",
+  "keywords": [
+    "google-sheets",
+    "google-sheets-api",
+    "google-sheets-api-v4",
+    "google-sheets-mapper"
+  ],
+  "homepage": "https://github.com/gglukmann/use-google-sheets#readme",
   "bugs": {
     "url": "https://github.com/gglukmann/use-google-sheets/issues"
   },
-  "homepage": "https://github.com/gglukmann/use-google-sheets#readme",
-  "directories": {
-    "test": "test"
-  },
+  "license": "MIT",
+  "author": "Gert Glükmann <gglukmann@gmail.com>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gglukmann/google-sheets-mapper.git"
   },
-  "keywords": [
-    "google-sheets-mapper",
-    "google-sheets",
-    "google-sheets-api",
-    "google-sheets-api-v4"
-  ],
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
   "files": [
     "dist",
     "src"
   ],
-  "engines": {
-    "node": ">=16"
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
-    "start": "tsdx watch",
+    "dev": "tsdx dev",
     "build": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint",
-    "prepare": "tsdx build"
+    "format": "tsdx format",
+    "typecheck": "tsdx typecheck",
+    "prepublishOnly": "bun run build"
   },
-  "peerDependencies": {},
-  "module": "dist/google-sheets-mapper.esm.js",
   "devDependencies": {
-    "tsdx": "^0.14.1",
-    "tslib": "^2.4.0",
-    "typescript": "^4.7.4"
+    "tsdx": "^2.0.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

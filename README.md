@@ -44,7 +44,7 @@ https://docs.google.com/spreadsheets/d/[THIS-IS-THE-SHEET-ID]/
 ### Get data from all sheets inside the spreadsheet
 
 ```js
-import { fetchGoogleSheetsData } from 'google-sheets-mapper';
+import { fetchGoogleSheetsData } from "google-sheets-mapper";
 
 const getData = async () => {
   try {
@@ -63,14 +63,14 @@ const getData = async () => {
 Don't use single quotes on sheet names, they will be removed because when using space in sheet name it will be returned wrapped with single quotes and plugin will remove them for clean string id.
 
 ```js
-import { fetchGoogleSheetsData } from 'google-sheets-mapper';
+import { fetchGoogleSheetsData } from "google-sheets-mapper";
 
 const getData = async () => {
   try {
     return await fetchGoogleSheetsData({
       apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
       sheetId: process.env.REACT_APP_GOOGLE_SHEETS_ID,
-      sheetsOptions: [{ id: 'Sheet1' }],
+      sheetsOptions: [{ id: "Sheet1" }],
     });
   } catch (error) {
     console.error(error);
@@ -119,10 +119,10 @@ try {
 ```js
 [
   {
-    id: 'Sheet1',
+    id: "Sheet1",
     data: [
-      { value: 'et', key: 'language' },
-      { value: 'Test sheet', key: 'title' },
+      { value: "et", key: "language" },
+      { value: "Test sheet", key: "title" },
     ],
   },
 ];
