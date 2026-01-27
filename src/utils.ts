@@ -22,7 +22,7 @@ const getSheetsTitleUrl = (sheetId: string, apiKey: string): string => {
 const getBatchUrl = (sheetId: string, ranges: Array<string>, apiKey: string): string => {
   const rangesQueryString = getRanges(ranges);
 
-  return `${GOOGLE_API_URL}/${sheetId}?${rangesQueryString}&key=${apiKey}&includeGridData=true`;
+  return `${GOOGLE_API_URL}/${sheetId}/values:batchGet?${rangesQueryString}&key=${apiKey}`;
 };
 
 const makeFetch = async <T>(url: string, config = {}): Promise<T> => {
@@ -64,10 +64,10 @@ const mapRecords = (
 };
 
 export const mapData = ({
-  sheets,
+  sheets = [],
   sheetsOptions = [],
 }: {
-  sheets: ValueRange[];
+  sheets?: ValueRange[];
   sheetsOptions?: SheetsOption[];
 }): MapperState[] => {
   return sheets.map((sheet: ValueRange) => {
@@ -110,7 +110,7 @@ export const fetchAllSheetsData = async ({
   sheetId,
 }: MapperOptions): Promise<ValueRangesResponse> => {
   const urlTitles = getSheetsTitleUrl(sheetId, apiKey);
-  const { sheets }: SheetsResponse = await makeFetch(urlTitles);
+  const { sheets = [] }: SheetsResponse = await makeFetch(urlTitles);
   const sheetsOptions = sheets.map((sheet: SheetFromResponse) => ({
     id: sheet.properties.title,
   }));
