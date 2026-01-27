@@ -20,7 +20,7 @@ pnpm add google-sheets-mapper
 bun add google-sheets-mapper
 ```
 
-UMD build available on [unpkg](https://www.unpkg.com/browse/google-sheets-mapper@1.0.0/dist/google-sheets-mapper.cjs.production.min.js).
+UMD build available on [unpkg](https://www.unpkg.com/browse/google-sheets-mapper/).
 
 ---
 
