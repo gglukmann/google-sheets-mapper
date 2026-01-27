@@ -32,7 +32,7 @@ class ApiResponseError extends Error {
     super(message);
     Object.setPrototypeOf(this, ApiResponseError.prototype);
     this.response = response;
-    if (Error.captureStackTrace) {
+    if ("captureStackTrace" in Error) {
       Error.captureStackTrace(this, ApiResponseError);
     }
   }
