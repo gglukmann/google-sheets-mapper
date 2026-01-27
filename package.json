@@ -49,6 +49,9 @@
     "prepublishOnly": "bun run build"
   },
   "devDependencies": {
+    "bunchee": "^6.9.4",
+    "oxfmt": "^0.27.0",
+    "oxlint": "^1.42.0",
     "tsdx": "^2.0.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
