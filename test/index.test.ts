@@ -85,12 +85,7 @@ describe("mapData", () => {
       {
         majorDimensions: "ROWS",
         range: "Sheet1!A1:B4",
-        values: [
-          ["metadata row"],
-          ["name", "value"],
-          ["foo", "bar"],
-          ["baz", "qux"],
-        ],
+        values: [["metadata row"], ["name", "value"], ["foo", "bar"], ["baz", "qux"]],
       },
     ];
 
@@ -115,11 +110,7 @@ describe("mapData", () => {
       {
         majorDimensions: "ROWS",
         range: "Sheet1!A1:B3",
-        values: [
-          ["name", "value"],
-          [],
-          ["test", "data"],
-        ],
+        values: [["name", "value"], [], ["test", "data"]],
       },
     ];
 
@@ -211,10 +202,7 @@ describe("GoogleSheetsMapper", () => {
       },
     ]);
 
-    expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringContaining("test-sheet-id"),
-      {}
-    );
+    expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining("test-sheet-id"), {});
   });
 
   it("fetches all sheets when no sheetsOptions provided", async () => {
@@ -222,10 +210,7 @@ describe("GoogleSheetsMapper", () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({
-        sheets: [
-          { properties: { title: "Sheet1" } },
-          { properties: { title: "Sheet2" } },
-        ],
+        sheets: [{ properties: { title: "Sheet1" } }, { properties: { title: "Sheet2" } }],
       }),
     });
 
@@ -279,7 +264,7 @@ describe("GoogleSheetsMapper", () => {
         apiKey: "invalid-key",
         sheetId: "test-sheet-id",
         sheetsOptions: [{ id: "Sheet1" }],
-      })
+      }),
     ).rejects.toThrow("failed with 403: Forbidden");
   });
 
@@ -296,7 +281,7 @@ describe("GoogleSheetsMapper", () => {
         apiKey: "test-key",
         sheetId: "nonexistent",
         sheetsOptions: [{ id: "Sheet1" }],
-      })
+      }),
     ).rejects.toThrow("failed with 404");
   });
 });

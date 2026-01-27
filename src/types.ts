@@ -34,7 +34,7 @@ export interface SheetsResponse {
 
 export interface MapperState {
   id: string;
-  data: object[];
+  data: Record<string, string>[];
 }
 
 export interface ApiResponse {
