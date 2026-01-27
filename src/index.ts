@@ -1,4 +1,4 @@
-import type { MapperOptions, MapperState, ValueRangesResponse } from "./types";
+import type { MapperOptions, MapperState } from "./types";
 import { fetchBatchData, fetchAllSheetsData, mapData } from "./utils";
 
 const GoogleSheetsMapper = {
@@ -7,8 +7,7 @@ const GoogleSheetsMapper = {
     sheetId,
     sheetsOptions = [],
   }: MapperOptions): Promise<MapperState[]> {
-    const response: ValueRangesResponse =
-      sheetsOptions.length === 0
+    const response = sheetsOptions.length === 0
         ? await fetchAllSheetsData({ apiKey, sheetId })
         : await fetchBatchData({ apiKey, sheetId, sheetsOptions });
     return mapData({ sheets: response.valueRanges, sheetsOptions });

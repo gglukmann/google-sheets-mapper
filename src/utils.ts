@@ -21,7 +21,6 @@ const getSheetsTitleUrl = (sheetId: string, apiKey: string): string => {
 
 const getBatchUrl = (sheetId: string, ranges: Array<string>, apiKey: string): string => {
   const rangesQueryString = getRanges(ranges);
-
   return `${GOOGLE_API_URL}/${sheetId}/values:batchGet?${rangesQueryString}&key=${apiKey}`;
 };
 
@@ -102,7 +101,7 @@ export const fetchBatchData = async ({
   const sheetsNames = sheetsOptions.map((option: SheetsOption) => option.id);
   const url = getBatchUrl(sheetId, sheetsNames, apiKey);
 
-  return await makeFetch(url);
+  return await makeFetch<ValueRangesResponse>(url);
 };
 
 export const fetchAllSheetsData = async ({
@@ -110,7 +109,7 @@ export const fetchAllSheetsData = async ({
   sheetId,
 }: MapperOptions): Promise<ValueRangesResponse> => {
   const urlTitles = getSheetsTitleUrl(sheetId, apiKey);
-  const { sheets = [] }: SheetsResponse = await makeFetch(urlTitles);
+  const { sheets } = await makeFetch<SheetsResponse>(urlTitles);
   const sheetsOptions = sheets.map((sheet: SheetFromResponse) => ({
     id: sheet.properties.title,
   }));
